@@ -120,6 +120,8 @@ $env:PYTHONUTF8='1'
 
 正式信息记录到 [integration_intake.json](integration_intake.json)，接入规则见 [INTEGRATION_INTAKE.md](INTEGRATION_INTAKE.md)。
 
+**手机入口：** ShotPilot / 镜导 Android。协议见 [docs/APP_INTEGRATION.md](docs/APP_INTEGRATION.md)。App 默认 `fixture + dry_run`，上报像素框（`space=pixel`）。契约测试：`tests/test_shotpilot_contract.py`。
+
 | 分类 | 团队需要提供 | Agent 侧接入位置 |
 | --- | --- | --- |
 | APP_VISION | payload 样例；bbox 坐标/画幅约定；距离单位/缺失表达；timestamp 时钟；Shot/Plan 关联 | Observation Adapter → 内部 Observation V1 |

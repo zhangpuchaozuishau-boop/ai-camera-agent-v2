@@ -1,0 +1,182 @@
+{
+  "_readme": [
+    "Mapping constants for the DustCar rig. Every number carries its provenance.",
+    "verified=false means PLACEHOLDER: computed targets from it are not trustworthy",
+    "until it is measured on the real hardware. Nothing here is a team standard.",
+    "fx/fy are the same simulation defaults used by the phone-vision-arm rig model;",
+    "they are NOT a real intrinsics measurement."
+  ],
+  "version": 1,
+  "camera": {
+    "fx_px": {
+      "value": 1500.0,
+      "verified": false,
+      "source": "phone-vision-arm pva/rig.py simulation default"
+    },
+    "fy_px": {
+      "value": 1500.0,
+      "verified": false,
+      "source": "phone-vision-arm pva/rig.py simulation default"
+    },
+    "frame_width_px": {
+      "value": 1920,
+      "verified": false,
+      "source": "1080p assumption; confirm the phone stream size"
+    },
+    "frame_height_px": {
+      "value": 1080,
+      "verified": false,
+      "source": "1080p assumption; confirm the phone stream size"
+    }
+  },
+  "subject": {
+    "default_height_mm": {
+      "value": 200.0,
+      "verified": false,
+      "source": "placeholder subject size; the App must supply the real one per shot"
+    }
+  },
+  "chassis": {
+    "watchdog_ms": {
+      "value": 1200,
+      "verified": true,
+      "source": "firmware spec section 4.1"
+    },
+    "keepalive_ms": {
+      "value": 180,
+      "verified": true,
+      "source": "firmware spec section 4.1 suggests 150-200ms"
+    },
+    "min_speed_pct": {
+      "value": 10,
+      "verified": true,
+      "source": "firmware spec section 4.1"
+    },
+    "default_speed_pct": {
+      "value": 40,
+      "verified": false,
+      "source": "conservative placeholder for a tabletop subject"
+    },
+    "mm_per_s_at_100pct": {
+      "value": 600.0,
+      "verified": false,
+      "source": "PLACEHOLDER: measure on the floor, speed=100, tape measure over >=1s"
+    },
+    "deg_per_s_at_100pct": {
+      "value": 90.0,
+      "verified": false,
+      "source": "PLACEHOLDER: measure rot_l/rot_r yaw rate"
+    },
+    "dir_close": {
+      "value": "fwd",
+      "verified": false,
+      "source": "PLACEHOLDER: which dir reduces camera-subject distance"
+    },
+    "dir_far": {
+      "value": "back",
+      "verified": false,
+      "source": "PLACEHOLDER"
+    }
+  },
+  "axes": {
+    "dolly": {
+      "device": "chassis",
+      "note": "distance / subject height ratio"
+    },
+    "lateral": {
+      "device": "pan_servo",
+      "note": "center_x"
+    },
+    "vertical": {
+      "device": "tilt_servo",
+      "note": "center_y"
+    },
+    "column": {
+      "device": "column_stepper",
+      "note": "alternative for center_y or for height changes; not used unless remapped"
+    }
+  },
+  "servos": {
+    "pan": {
+      "id": 1,
+      "zero_angle": 90,
+      "deg_per_unit": 1.0,
+      "sign": -1,
+      "verified": false,
+      "source": "PLACEHOLDER: confirm id, direction sign and gear ratio on the gimbal"
+    },
+    "tilt": {
+      "id": 2,
+      "zero_angle": 90,
+      "deg_per_unit": 1.0,
+      "sign": -1,
+      "verified": false,
+      "source": "PLACEHOLDER: confirm id, direction sign and gear ratio on the gimbal"
+    },
+    "safe_min_angle": {
+      "value": 5,
+      "verified": false,
+      "source": "PLACEHOLDER: mechanical limit, confirm before live motion"
+    },
+    "safe_max_angle": {
+      "value": 175,
+      "verified": false,
+      "source": "PLACEHOLDER: mechanical limit, confirm before live motion"
+    }
+  },
+  "steppers": {
+    "column": {
+      "id": 1,
+      "mm_per_rev": 40.0,
+      "rpm": 600,
+      "dir_up": 1,
+      "verified": false,
+      "source": "PLACEHOLDER: GT2-20T belt = 40mm/rev guess; confirm id and direction"
+    },
+    "beam": {
+      "id": 2,
+      "mm_per_rev": 40.0,
+      "rpm": 600,
+      "dir_extend": 0,
+      "verified": false,
+      "source": "PLACEHOLDER: confirm id and direction"
+    }
+  },
+  "limits": {
+    "max_single_move_mm": {
+      "value": 800.0,
+      "verified": false,
+      "source": "safety placeholder for one action"
+    },
+    "min_action_ms": {
+      "value": 120,
+      "verified": false,
+      "source": "below this a move is not worth sending"
+    },
+    "max_speed_pct": {
+      "value": 60,
+      "verified": false,
+      "source": "safety cap for autonomous motion"
+    },
+    "max_run_seconds": {
+      "value": 120.0,
+      "verified": true,
+      "source": "adapter guard, not a firmware limit"
+    },
+    "max_correction_mm": {
+      "value": 300.0,
+      "verified": false,
+      "source": "safety placeholder: biggest dolly one visual correction may command"
+    },
+    "max_correction_deg": {
+      "value": 12.0,
+      "verified": false,
+      "source": "safety placeholder: biggest joint move one visual correction may command"
+    },
+    "min_correction_interval_s": {
+      "value": 0.4,
+      "verified": false,
+      "source": "safety placeholder: settle time between corrections"
+    }
+  }
+}

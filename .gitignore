@@ -12,3 +12,6 @@ reference-inspection/
 packages/
 tools-local/
 **/_工作文件/
+
+# 运行时产物（日志、截图、请求记录）
+webui/runs/

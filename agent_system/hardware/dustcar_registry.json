@@ -1,0 +1,193 @@
+{
+  "revision": "dustcar-v1.2",
+  "actions": {
+    "chassis_drive": {
+      "action_name": "chassis_drive",
+      "description": "REAL: drive the mecanum chassis via GET /api/cmd for duration_ms, re-sending dir every ~180ms to defeat the 1200ms watchdog, then dir=stop. speed is percent of the firmware's 0..1 speed factor.",
+      "parameter_schema": {
+        "type": "object",
+        "properties": {
+          "dir": {
+            "type": "string",
+            "enum": [
+              "fwd",
+              "back",
+              "left",
+              "right",
+              "rot_l",
+              "rot_r"
+            ]
+          },
+          "speed": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 100
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          }
+        },
+        "required": [
+          "dir",
+          "speed",
+          "duration_ms"
+        ],
+        "additionalProperties": false
+      },
+      "allowed_usage": [
+        "INITIAL",
+        "CORRECTION"
+      ],
+      "correction_allowed": true,
+      "motion_semantics": [
+        "forward-like",
+        "backward-like",
+        "lateral",
+        "rotation"
+      ],
+      "correction_dimensions": [
+        "height_ratio"
+      ]
+    },
+    "chassis_stop": {
+      "action_name": "chassis_stop",
+      "description": "REAL: GET /api/cmd?dir=stop. The only way to stop the wheels; /api/stop does not touch the chassis.",
+      "parameter_schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "allowed_usage": [
+        "INITIAL"
+      ],
+      "correction_allowed": false,
+      "motion_semantics": [
+        "hold"
+      ]
+    },
+    "stepper_run": {
+      "action_name": "stepper_run",
+      "description": "REAL: run one MKS stepper via POST /api/motor in speed mode for duration_ms. Position is time-based (no encoder feedback), so travel comes from rpm x time x calibration.",
+      "parameter_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "dir": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "rpm": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3000
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 60000
+          }
+        },
+        "required": [
+          "id",
+          "dir",
+          "rpm",
+          "duration_ms"
+        ],
+        "additionalProperties": false
+      },
+      "allowed_usage": [
+        "INITIAL"
+      ],
+      "correction_allowed": false,
+      "motion_semantics": [
+        "column-like",
+        "extension-like"
+      ]
+    },
+    "servo_set": {
+      "action_name": "servo_set",
+      "description": "REAL: set one servo angle via POST /api/servo. Used here for gimbal pan/tilt (or beam swing if remapped in calibration.json).",
+      "parameter_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "angle": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 180
+          }
+        },
+        "required": [
+          "id",
+          "angle"
+        ],
+        "additionalProperties": false
+      },
+      "allowed_usage": [
+        "INITIAL",
+        "CORRECTION"
+      ],
+      "correction_allowed": true,
+      "motion_semantics": [
+        "pan-like",
+        "tilt-like"
+      ],
+      "correction_dimensions": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    "actuator_stop": {
+      "action_name": "actuator_stop",
+      "description": "REAL: POST /api/stop for steppers and servos, with optional MKS emergency stop.",
+      "parameter_schema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "enum": [
+              "all",
+              "motors",
+              "motor1",
+              "motor2",
+              "servos"
+            ]
+          },
+          "emergency": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "target",
+          "emergency"
+        ],
+        "additionalProperties": false
+      },
+      "allowed_usage": [
+        "INITIAL"
+      ],
+      "correction_allowed": false,
+      "motion_semantics": [
+        "hold"
+      ]
+    }
+  }
+}
